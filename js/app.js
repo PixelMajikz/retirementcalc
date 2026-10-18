@@ -51,7 +51,7 @@ function calc(){
  const period=A.plan-A.ret,rm=Math.pow(1+A.post,1/12),gm=Math.pow(1+A.infl,1/12);
  const fund=c60*(1-Math.pow(gm/rm,period*12))/(rm-gm)*rm;
  const next=A.starts.find(s=>s>=age&&s<A.ret)||age;
- return{age,today,c60,fund,next,nm:monthlySaving(fund,next),rows:A.starts.map(s=>({s,m:monthlySaving(fund,s)}))}}
+ return{age,today,c60,fund,next,nm:monthlySaving(fund,next),cur:monthlySaving(fund,age),rows:A.starts.map(s=>({s,m:monthlySaving(fund,s)}))}}
 /* ---------- Rendering ---------- */
 function head(n){if(!n)return'';return`<header><div class="logo">${im('logo')}</div><div class="prog"><b class="pill">Step ${n} of 6</b><div class="dots">${[1,2,3,4,5,6].map(i=>`<i class="${i<n?'d':i==n?'c':''}">${i<n?'✓':i}</i>`).join('')}</div></div><div class="badge"><b>Meet Future Me</b><span>Your Choices. A Brighter Tomorrow.</span></div></header>`}
 function nav(back,next,label,dis,backLabel='Back'){return`<div class="nav"><button class="btn alt" onclick="${back}">${L} ${backLabel}</button><button class="btn go" id="nx" onclick="${next}" ${dis?'disabled':''}>${label} ${R}</button></div>`}
@@ -102,6 +102,7 @@ ${nav('go(3)','go(5)','See the Difference')}</main>`},
 <div class="card"><div class="bands">${e?`<div style="grid-column:span ${e};background:#cdeede">If you had started earlier</div>`:''}${mid?'<div style="background:#fff0a8">Your next starting point</div>':''}${w?`<div style="grid-column:span ${w};background:#fbd8dc">If you wait</div>`:''}</div>
 <div class="cols">${c.rows.map(r=>`<div class="col ${r.s===c.next?'nx':''} ${r.s>=A.ret?'off':''}"><div class="n">${r.s}</div>${im('p'+r.s)}<small>Age ${r.s}</small><div class="m">${r.s>=A.ret?'—':rs(r.m)}</div><small>${r.s>=A.ret?'past retirement':'per month'}</small></div>`).join('')}</div></div>
 <div class="tip"><i>💡</i><span>Starting earlier gives your money more time to grow.<br>Even a small amount can make a big difference!</span></div>
+<div class="est"><span>Estimated Monthly Savings from your current age</span><b>${rs(c.cur)}</b></div>
 <div style="margin-top:16px">${nav('go(4)','go(6)','Next')}</div></main>`},
 6:()=>{const c=calc();
  return`<main><div class="side">${im('boy6','scene')}<div><p class="hand" style="font-size:1.8rem;margin:0 0 8px">A brighter tomorrow is in your hands!</p>
